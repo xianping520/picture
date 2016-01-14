@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/style.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/waterfall.js"></script>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/scrolltop.js"></script>
+<script language="javascript">
+$(document).ready(function(){ 
+//user login	
+	$("#login ul.child").removeClass("child");
+	
+	$("#login li").has("ul").hover(function(){
+		$(this).addClass("current").children("ul").fadeIn();
+	}, function() {
+		$(this).removeClass("current").children("ul").hide();
+	});
+		
+});
+</script>
+</head>
+<body>
+<div class="header">
+   <div class="top">
+       <div id="logo"></div>
+       <div class="nav">
+           <ul>
+      	<li><a href='{dede:global.cfg_cmsurl/}/'><span>首页</span></a></li>
+      	{dede:channel type='top' row='10' currentstyle="<li class='hover'><a href='~typelink~' ~rel~><span>~typename~</span></a></li>"}
+      	<li><a href='[field:typeurl/]' [field:rel/]><span>[field:typename/]</span></a></li>
+      	{/dede:channel}
+    	</ul>
+       </div>
+       <div id="login">
+           <ul>
+              <li><a href="javascript:void();" id="login">用户登录</a> 
+                  <ul class="child">  
+                  <!------user login --------->
+                      <form name="userlogin" action="{dede:global.cfg_memberurl/}/index_do.php" method="POST">
+                        <input type="hidden" name="fmdo" value="login" />
+                        <input type="hidden" name="dopost" value="login" />
+                        <input type="hidden" name="keeptime" value="604800" />
+         <li>
+             <label>账 号:</label>
+             <span><input type="text" name="userid" size="20" class="ipt-txt" /></span>
+        </li>
+        <li>
+           <label>密 码:</label>
+              <span><input type="password" name="pwd" size="20" class="ipt-txt" /></span>
+        </li>
+        {dede:php}
+        if(preg_match("#2#", $safe_gdopen))
+        {
+        echo '
+        <li>
+        <label>验 证:</label>
+         <span><input type="text" name="vdcode" size="8" class="ipt-txt" />
+         <img id="vdimgck" align="absmiddle" onClick="this.src=this.src+\'?\'" style="cursor:pointer;margin-left:0px;text-transform:uppercase;" alt="看不清？点击更换" src="'.$cfg_cmspath.'/include/vdimgck.php"/></span></li>
+        ';
+        }
+        {/dede:php}
+        <div class="submit">
+         <button type="submit" class="btn-1">登录</button>
+         <a href="{dede:global.cfg_memberurl/}/index_do.php?fmdo=user&dopost=regnew" >注册帐号</a> <a href="{dede:global.cfg_memberurl/}/resetpassword.php">忘记密码?</a> </div>
+       </form>
+                    <!--------// user login ----------->
+                  </ul>
+              </li>
+           </ul>
+       </div>
+   </div>
+</div>
+
+<!-- 内容 -->
+<div class="body clear">
+	<div class="list">
+		<ul class="clear" id="content">
+			
+            {dede:list pagesize='80'}
+			<!-- 图片 -->
+			<li class="post">
+            <span class="sc"><a href="#">喜欢</a></span>
+            <span class="view"><a href="#"></a></span>
+			<div class="link">
+			<span class="img">
+			[field:array runphp='yes']@me = (empty(@me['litpic']) ? "" : "<a href='{@me['arcurl']}' target='_blank'><img src='{@me['litpic']}'/></a>"); [/field:array]
+			<span class="arr"><span></span></span>			</span>
+			<span class="text">
+			<em>
+            <b><a href="[field:arcurl/]" class="title">[field:title/]</a></b>
+			<p>
+				[field:description/]... 
+            </p>
+			</em>
+            <p class="info">
+                <a href="#" class="view" title=" 访问">[field:click/]</a>
+                <a href="#" class="good" title="好评">[field:scores/]</a>
+             </p>
+            </span>
+            </div>
+            </li>            
+    
+            {/dede:list}
+		</ul>
+	</div>
+ 
+ <h2 class="next_page" style="font-size:17px;">
+			 {dede:pagelist listitem="next"/}
+		</h2>
+        
+</div>
+
+
+<DIV style="DISPLAY: none" id=goTopBtn>回到顶部</DIV>
+<SCRIPT type=text/javascript>goTopEx();</SCRIPT>
+</body>
+</html>
